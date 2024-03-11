@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.blog.springblogproj.repository.ArticleMapper">
+    <select id="selectAllArticles" resultType="com.blog.springblogproj.domain.Article" >
+        SELECT *
+        FROM article a
+    </select>
+
+    <select id="selectArticleById" resultType="com.blog.springblogproj.domain.Article" parameterType="long">
+        SELECT *
+        FROM article
+        WHERE
+            <choose>
+                <when test="id != null">id = #{id}</when>
+                <otherwise>false</otherwise>
+            </choose>
+    </select>
+
+    <insert id="saveArticle" flushCache="true" keyProperty="id" useGeneratedKeys="true" parameterType="com.blog.springblogproj.domain.Article">
+        INSERT INTO article(title, content)
+        VALUES (#{title}, #{content})
+    </insert>
+
+    <select id="isExistsArticle" resultType="boolean" parameterType="com.blog.springblogproj.domain.Article">
+        SELECT EXISTS(SELECT 1
+                      FROM article
+                      WHERE
+                          <choose>
+                              <when test="id != null">id = #{id}</when>
+                              <when test="id == null and title != null">title = #{title}</when>
+                              <otherwise>false</otherwise>
+                          </choose>)
+    </select>
+
+    <update id="updateArticle" flushCache="true" parameterType="com.blog.springblogproj.domain.Article">
+        UPDATE article
+        <set>
+            <if test="title != null">title = #{title}, </if>
+            <if test="content != null">content = #{content}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteArticle" flushCache="true" parameterType="long">
+        DELETE FROM article
+        WHERE <if test="id != null">id = #{id}</if> <if test="id == null">false</if>
+    </delete>
+</mapper>
