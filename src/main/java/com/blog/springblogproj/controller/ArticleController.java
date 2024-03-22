@@ -3,6 +3,7 @@ package com.blog.springblogproj.controller;
 import com.blog.springblogproj.domain.Article;
 import com.blog.springblogproj.domain.ArticleResponse;
 import com.blog.springblogproj.domain.SaveArticleRequest;
+import com.blog.springblogproj.repository.ArticleRepository;
 import com.blog.springblogproj.service.ArticleService;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class ArticleController {
 
     private final ArticleService articleService;
+
+    // pr test용 추가 코드 변경 사항 가정
+    private final ArticleRepository articleRepository;
 
     // ResponseEntity 객체를 사용하면 HTTP 헤더 정보도 넣을 수 있다.
 
